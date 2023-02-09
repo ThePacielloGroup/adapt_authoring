@@ -24,13 +24,26 @@
         .component-type {
             color: @primary-color;
             margin-bottom: 5px;
+            border: 1px solid @primary-color;
+            padding: 5px;
+            margin-right: 5px;
+        }
+        .component-detail {
+            p {
+                margin-bottom: 1em;
+                margin-top: 1em;
+            }
+            ol {
+                margin-left: 1.5em;
+            }
         }
     }
 
     &-title,
     &-type {
-        font-size: 14px;
-        font-weight: @font-weight;
+        font-weight: bold;
+        font-size: 1.2em;
+        display: inline-block;
     }
 
     &-left {

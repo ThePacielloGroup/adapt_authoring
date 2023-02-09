@@ -75,3 +75,160 @@ input:disabled, textarea:disabled {
   margin-top: 1rem;
   display: block;
 }
+
+
+// HH
+.ck-source-editing-area textarea {
+    overflow: auto !important;
+}
+
+
+.ck-source-editing-area {
+    min-height: 20em;
+    max-height: 40em;
+}
+
+.ck.ck-content {
+    .ck.ck-editor__main & {
+        min-height: 20em;
+        max-height: 40em;
+    }
+
+    p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+    }
+
+    ol, ul {
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        padding-inline-start: 2em;
+
+        li {
+            margin-left: 0;
+        }
+    }
+
+    @noteGreen: #008000;
+    @noteRed: #8b0707;
+    @noteOrange: #DA7E07;
+    @noteBlue:#005780;
+    
+    .box-styles {
+      margin: 1.75em 0 1.25em;
+      padding: 1.625em 1.625em 1em;
+      position: relative;
+      text-shadow: none;
+      border-width: 1px 1px 1px 0.25em;
+      border-style: solid;
+      color: #000;
+    }
+    
+    .box-styles-before {
+      font-size: 95%;
+      left: -0.625em;
+      padding: 0.125em 0.5em;
+      position: absolute;
+      top: -0.5em;
+      border-width: 1px;
+      border-style: solid;
+      color: #fff;
+    }
+    
+    .keypoint {
+      .box-styles();
+      background-color: desaturate(lighten(@noteGreen, 70%), 50%);
+      border-color: @noteGreen;
+    
+      &::before {
+        .box-styles-before();
+        content: 'Key point:';
+        background-color: @noteGreen;
+        border-color:@noteGreen;
+      }
+    }
+    
+    .warning {
+      .box-styles();
+      background-color: desaturate(lighten(@noteRed, 70%), 50%);
+      border-color: @noteRed;
+    
+      &::before {
+        .box-styles-before();
+        content: 'Be warned:';
+        background-color: @noteRed;
+        border-color:@noteRed;
+      }
+    }
+    
+    .at-notes {
+      .box-styles();
+      background-color: desaturate(lighten(@noteBlue, 70%), 50%);
+      border-color: @noteBlue;
+    
+      &::before {
+        .box-styles-before();
+        content: 'Assistive technology notes:';
+        background-color: @noteBlue;
+        border-color:@noteBlue;
+      }
+    }
+
+    .shaded {
+        background-image: linear-gradient(135deg, #7b6e00 0%, #7b6e00 30px, #0000 30px), linear-gradient(135deg, #0000 calc(100% - 30px), #7b6e00 calc(100% - 30px), #7b6e00);
+        border: 1px solid #7b6e00;
+        background-color: #fffad2;
+        padding: 30px;
+        border-radius: 5px;
+    }
+
+    kbd {
+        background-color: #F4F4F4;
+        border-radius: 3px;
+        border: 1px #333 solid;
+        color: #333;
+        font-size: .85em;
+        font-weight: normal;
+        margin: 0 0.15rem;
+        padding: 0 0.25em;
+    }
+
+    .note {
+        position: relative;
+        min-height: 5em;
+        border-left: 2em solid #696969;
+        padding: 1em 0.5em;
+        background-color: #eaeff3;
+        border-radius: 5px;
+
+        &::before {
+            content: "Note";
+            transform: rotate(270deg);
+            position: absolute;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            top: 2em;
+            left: 0;
+            margin-left: -2.5em;
+            font-weight: bold;
+            color: #FFF;
+            text-shadow: none;
+        }
+    }
+
+    div.grid ol, div.grid ul, ol.grid, ul.grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
+        gap: .2em;
+        padding: 0;
+        list-style: none;
+        max-height: none;
+
+        code {
+            background-color: inherit;
+        }
+    }
+}

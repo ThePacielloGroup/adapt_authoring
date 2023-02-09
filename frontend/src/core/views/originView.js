@@ -84,8 +84,9 @@ define(function(require){
       if (this.form) {
         // remove ckeditor instances
         this.form.$( "textarea" ).each(function () {
-          var editor = CKEDITOR.instances[this.id];
+          //var editor = CKEDITOR.instances[this.id];
           try {
+            var editor = window.tpgiCKEditorInstances[this.id];
             // check editor is still in the dom (otherwise throws exception)
             if (editor && editor.window.getFrame()) {
               editor.destroy(true);
