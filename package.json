@@ -87,7 +87,7 @@
     "mocha": "^6.2.3",
     "mocha-multi": "^1.1.6",
     "mocha-simple-html-reporter": "^1.1.0",
-    "mongodb": "^4.10.0",
+    "mongodb": "^5.9.1",
     "should": "^13.2.3",
     "supertest": "^4.0.2"
   }
