@@ -66,163 +66,176 @@ define([
   Backbone.Form.editors.TextArea.prototype.render = function() {
     textAreaRender.call(this);
 
-    _.defer(function() {
+    function until(conditionFunction) {
+      function poll(resolve) {
+        if (conditionFunction()) {
+          resolve();
+          return;
+        }
+        setTimeout(function() {
+          poll(resolve)
+        }, 10);
+      }
+      return new Promise(poll);
+    }
+    function isAttached($element) {
+      return function() {
+        return Boolean($element.parents('body').length);
+      };
+    }
+
+    until(isAttached(this.$el)).then(function() {
       ClassicEditor
-				.create( this.$el[0], {
-					licenseKey: '',
-          //plugins: ['Alignment', 'Autoformat', 'AutoLink', 'BlockQuote', 'Bold', 'CKFinderUploadAdapter', 'CloudServices', 'Code', 'CodeBlock', 'DataFilter', 'DataSchema', 'Essentials', 'FindAndReplace', 'GeneralHtmlSupport', 'Italic', 'Link', 'List', 'ListProperties', 'Paragraph', 'PasteFromOffice', 'RemoveFormat', 'SourceEditing', 'SpecialCharacters', 'SpecialCharactersCurrency', 'SpecialCharactersLatin', 'SpecialCharactersMathematical', 'SpecialCharactersText', 'Strikethrough', 'Subscript', 'Superscript', 'Table', 'TableCaption', 'TableCellProperties', 'TableColumnResize', 'TableProperties', 'TableToolbar', 'Underline'],
-          toolbar: { 
-            items: ["sourceEditing","|","style","|","bold","italic","underline","strikethrough","highlight","subscript","superscript","|","bulletedList","numberedList","alignment","|","-","codeBlock","code","|","link","blockQuote","insertTable","specialCharacters","|","undo","redo","findAndReplace","removeFormat","textPartLanguage"], 
-            shouldNotGroupWhenFull: true 
-          },
-          style: {
-            definitions: [
-              {
-                  name: 'Keypoint',
-                  element: 'p',
-                  classes: [ 'keypoint' ]
-              },
-              {
-                name: 'Warning',
+      .create( this.$el[0], {
+        licenseKey: '',
+        //plugins: ['Alignment', 'Autoformat', 'AutoLink', 'BlockQuote', 'Bold', 'CKFinderUploadAdapter', 'CloudServices', 'Code', 'CodeBlock', 'DataFilter', 'DataSchema', 'Essentials', 'FindAndReplace', 'GeneralHtmlSupport', 'Italic', 'Link', 'List', 'ListProperties', 'Paragraph', 'PasteFromOffice', 'RemoveFormat', 'SourceEditing', 'SpecialCharacters', 'SpecialCharactersCurrency', 'SpecialCharactersLatin', 'SpecialCharactersMathematical', 'SpecialCharactersText', 'Strikethrough', 'Subscript', 'Superscript', 'Table', 'TableCaption', 'TableCellProperties', 'TableColumnResize', 'TableProperties', 'TableToolbar', 'Underline'],
+        toolbar: { 
+          items: ["sourceEditing","|","style","|","bold","italic","underline","strikethrough","highlight","subscript","superscript","|","bulletedList","numberedList","alignment","|","-","codeBlock","code","|","link","blockQuote","insertTable","specialCharacters","|","undo","redo","findAndReplace","removeFormat","textPartLanguage"], 
+          shouldNotGroupWhenFull: true 
+        },
+        style: {
+          definitions: [
+            {
+                name: 'Keypoint',
                 element: 'p',
-                classes: [ 'warning' ]
-              },
-              {
-                name: 'AT notes',
-                element: 'p',
-                classes: [ 'at-notes' ]
-              },
-              // {
-              //     name: 'Page summary',
-              //     element: 'ul',
-              //     classes: [ 'page-summary' ]
-              // },
-              // {
-              //     name: 'Grid list',
-              //     element: 'ul',
-              //     classes: [ 'grid' ]
-              // },
-              {
-                name: 'Shaded section',
-                element: 'p',
-                classes: [ 'shaded' ]
-              },
-              {
-                name: 'Cite',
-                element: 'cite',
-                classes: [ '' ]
-              },
-              {
-                name: 'Kbd',
-                element: 'kbd',
-                classes: [ '' ]
-              },
-              {
-                name: 'Quote',
-                element: 'q',
-                classes: [ '' ]
-              },
-              {
-                name: 'Note',
-                element: 'p',
-                classes: [ 'note' ]
-              },
-            ]
-          },
-          link: {
-            addTargetToExternalLinks: true,
-            decorators: {
-              isExternal: {
-                mode: 'manual',
-                label: 'Open in a new tab',
-                attributes: {
-                  target: '_blank'
-                }
+                classes: [ 'keypoint' ]
+            },
+            {
+              name: 'Warning',
+              element: 'p',
+              classes: [ 'warning' ]
+            },
+            {
+              name: 'AT notes',
+              element: 'p',
+              classes: [ 'at-notes' ]
+            },
+            // {
+            //     name: 'Page summary',
+            //     element: 'ul',
+            //     classes: [ 'page-summary' ]
+            // },
+            // {
+            //     name: 'Grid list',
+            //     element: 'ul',
+            //     classes: [ 'grid' ]
+            // },
+            {
+              name: 'Shaded section',
+              element: 'p',
+              classes: [ 'shaded' ]
+            },
+            {
+              name: 'Cite',
+              element: 'cite',
+              classes: [ '' ]
+            },
+            {
+              name: 'Kbd',
+              element: 'kbd',
+              classes: [ '' ]
+            },
+            {
+              name: 'Quote',
+              element: 'q',
+              classes: [ '' ]
+            },
+            {
+              name: 'Note',
+              element: 'p',
+              classes: [ 'note' ]
+            },
+          ]
+        },
+        link: {
+          addTargetToExternalLinks: true,
+          decorators: {
+            isExternal: {
+              mode: 'manual',
+              label: 'Open in a new tab',
+              attributes: {
+                target: '_blank'
               }
             }
-          },
-          htmlSupport: {
-            allow: [  
-              {
-                name: /^(div|p|q|kbd|dfn|mark|cite|figcaption)$/,
-                classes: true,
-                attributes: /^(tabindex|role|aria-label)$/
-              },
-              {
-                name: "a",
-                attributes: "target"
-              },
-              {
-                name: "blockquote",
-                attributes: "cite"
-              }
-            ]
-          },
-          codeBlock: {
-            indentSequence: "  ",
-            languages: [
-              { language: 'html', label: 'HTML' },
-              { language: 'css', label: 'CSS' },              
-              { language: 'javascript', label: 'JavaScript' },
-              { language: 'java', label: 'Java' },
-              { language: 'python', label: 'Python' },
-              { language: 'typescript', label: 'TypeScript' },
-              { language: 'xml', label: 'XML' },
-              { language: 'cs', label: 'C#' },
-              { language: 'cpp', label: 'C++' }
-            ]
-          },
-          language: {
-            textPartLanguage: [
-              { title: 'English', languageCode: 'en' },
-              { title: 'Français', languageCode: 'fr' },
-              { title: 'Deutsch', languageCode: 'de' },
-              { title: 'Español', languageCode: 'es' },
-              { title: '日本語', languageCode: 'ja' },
-              { title: '한국어', languageCode: 'ko' },
-              { title: 'Nederlands', languageCode: 'nl' },
-              { title: '中文 (简体)', languageCode: 'zh-CN' }
-            ]
-          },
-          on: {
-            change: function() {
-              this.trigger('change', this);
-            }.bind(this),
-            instanceReady: function() {
-              var writer = this.dataProcessor.writer;
-              var elements = Object.keys(CKEDITOR.dtd.$block);
-  
-              var rules = {
-                indent: false,
-                breakBeforeOpen: false,
-                breakAfterOpen: false,
-                breakBeforeClose: false,
-                breakAfterClose: false
-              };
-  
-              writer.indentationChars = '';
-              writer.lineBreakChars = '';
-              elements.forEach(function(element) { writer.setRules(element, rules); });
+          }
+        },
+        htmlSupport: {
+          allow: [  
+            {
+              name: /^(div|p|q|kbd|dfn|mark|cite|figcaption)$/,
+              classes: true,
+              attributes: /^(tabindex|role|aria-label)$/
+            },
+            {
+              name: "a",
+              attributes: "target"
+            },
+            {
+              name: "blockquote",
+              attributes: "cite"
             }
+          ]
+        },
+        codeBlock: {
+          indentSequence: "  ",
+          languages: [
+            { language: 'html', label: 'HTML' },
+            { language: 'css', label: 'CSS' },              
+            { language: 'javascript', label: 'JavaScript' },
+            { language: 'java', label: 'Java' },
+            { language: 'python', label: 'Python' },
+            { language: 'typescript', label: 'TypeScript' },
+            { language: 'xml', label: 'XML' },
+            { language: 'cs', label: 'C#' },
+            { language: 'cpp', label: 'C++' }
+          ]
+        },
+        language: {
+          textPartLanguage: [
+            { title: 'English', languageCode: 'en' },
+            { title: 'Français', languageCode: 'fr' },
+            { title: 'Deutsch', languageCode: 'de' },
+            { title: 'Español', languageCode: 'es' },
+            { title: '日本語', languageCode: 'ja' },
+            { title: '한국어', languageCode: 'ko' },
+            { title: 'Nederlands', languageCode: 'nl' },
+            { title: '中文 (简体)', languageCode: 'zh-CN' }
+          ]
+        },
+        on: {
+          change: function() {
+            this.trigger('change', this);
+          }.bind(this),
+          instanceReady: function() {
+            var writer = this.dataProcessor.writer;
+            var elements = Object.keys(CKEDITOR.dtd.$block);
+
+            var rules = {
+              indent: false,
+              breakBeforeOpen: false,
+              breakAfterOpen: false,
+              breakBeforeClose: false,
+              breakAfterClose: false
+            };
+
+            writer.indentationChars = '';
+            writer.lineBreakChars = '';
+            elements.forEach(function(element) { writer.setRules(element, rules); });
           }
-				} )
-				.then( editor => {
-					this.editor = editor;
-          if (!window.tpgiCKEditorInstances) {
-            window.tpgiCKEditorInstances = {};
-          }
-          console.log("here");
-          window.tpgiCKEditorInstances[this.$el[0].id] = editor;
-				} )
-				.catch( error => {
-					console.error( 'Oops, something went wrong!' );
-					console.error( error );
-				} );
-
-        
-
-
-
+        }
+      } )
+      .then( editor => {
+        this.editor = editor;
+        if (!window.tpgiCKEditorInstances) {
+          window.tpgiCKEditorInstances = {};
+        }
+        console.log("here");
+        window.tpgiCKEditorInstances[this.$el[0].id] = editor;
+      } )
+      .catch( error => {
+        console.error( 'Oops, something went wrong!' );
+        console.error( error );
+      } );
       // this.editor = CKEDITOR.replace(this.$el[0], {
       //   dataIndentationChars: '',
       //   disableNativeSpellChecker: false,
@@ -261,11 +274,10 @@ define([
       //     { name: 'styles', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
       //     { name: 'links', items: [ 'Link', 'Unlink' ] },
       //     { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-      //     { name: 'insert', items: ['SpecialChar', 'Table', "CodeSnippet"] },
+      //     { name: 'insert', items: [ 'SpecialChar', 'Table' ] },
       //     { name: 'tools', items: [] },
       //     { name: 'others', items: [ '-' ] }
-      //   ],
-      //   extraPlugins: 'codesnippet'
+      //   ]
       // });
     }.bind(this));
 
